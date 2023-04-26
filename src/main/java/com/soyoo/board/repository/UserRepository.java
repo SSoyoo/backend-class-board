@@ -5,8 +5,8 @@ import com.soyoo.board.entity.UserEntity;
 
 public interface UserRepository extends JpaRepository<UserEntity , String>{
     
-    public boolean exiexistsByEmail(String email);
-    public boolean exiexistsByNickname(String nickname);
-    public boolean exiexistsByPhoneNumber(String phoneNumber);
+    public boolean existsByEmail(String email);
+    public boolean existsByNickname(String nickname);
+    public boolean existsByPhoneNumber(String phoneNumber);
     
 }
