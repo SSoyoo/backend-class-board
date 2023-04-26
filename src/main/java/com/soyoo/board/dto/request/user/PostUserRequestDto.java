@@ -1,4 +1,4 @@
-package com.soyoo.board.dto.request;
+package com.soyoo.board.dto.request.user;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
