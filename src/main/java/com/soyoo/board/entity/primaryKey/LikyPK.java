@@ -10,8 +10,8 @@ import lombok.Data;
 public class LikyPK implements Serializable {
 
     @Column(name = "board_number")
-    private int board_number;
+    private int boardNumber;
     @Column(name = "user_email")
-    private String user_email;
+    private String userEmail;
     
 }

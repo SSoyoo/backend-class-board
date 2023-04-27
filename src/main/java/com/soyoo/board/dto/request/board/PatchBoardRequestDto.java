@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class PatchBoardRequest {
+public class PatchBoardRequestDto {
     
     @NotBlank
     @Email
