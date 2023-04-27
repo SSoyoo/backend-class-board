@@ -1,8 +1,10 @@
 package com.soyoo.board.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.soyoo.board.entity.UserEntity;
+import org.springframework.stereotype.Repository;
 
+import com.soyoo.board.entity.UserEntity;
+@Repository
 public interface UserRepository extends JpaRepository<UserEntity , String>{
     
     public boolean existsByEmail(String email);
