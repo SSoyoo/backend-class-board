@@ -13,7 +13,7 @@ public class PostBoardRequest {
 
     @Email
     @NotBlank
-    private String userEmail;
+    private String boardWriterEmail;
 
     @NotNull
     private Integer boardNumber;
