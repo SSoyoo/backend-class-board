@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.soyoo.board.common.util.CustomResponse;
 import com.soyoo.board.dto.request.board.PatchBoardRequestDto;
 import com.soyoo.board.dto.request.board.PostBoardRequest;
 import com.soyoo.board.dto.response.ResponseDto;
@@ -87,15 +88,15 @@ public class BoardServiceImplement implements BoardService {
 
             //boardNumber null처리
             if(boardNumber == null){
-                errorBody = new ResponseDto("VF", "Request Parameter Validation Failed");
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+                
+                return CustomResponse.validationFaild();
             }
 
             //1. 존재하지 않는 게시물
             BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
             if (boardEntity == null){
-                errorBody = new ResponseDto("NB", "Non-exist board number");
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+                
+                return CustomResponse.notExistBoardNumber();
             }
             String writerEmail = boardEntity.getWriterEmail();
             UserEntity userEntity = userRepository.findByEmail(writerEmail);
@@ -104,8 +105,8 @@ public class BoardServiceImplement implements BoardService {
        
         } catch (Exception e) {
             e.printStackTrace();
-            errorBody = new ResponseDto("DE", "Database Error");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorBody);
+            
+            return CustomResponse.databaseError();
         }
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
