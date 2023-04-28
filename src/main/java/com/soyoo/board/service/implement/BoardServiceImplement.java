@@ -2,9 +2,6 @@ package com.soyoo.board.service.implement;
 
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlElement.DEFAULT;
-import javax.xml.stream.events.Comment;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.soyoo.board.common.util.CustomResponse;
 import com.soyoo.board.dto.request.board.PatchBoardRequestDto;
-import com.soyoo.board.dto.request.board.PostBoardRequest;
+import com.soyoo.board.dto.request.board.PostBoardRequestDto;
 import com.soyoo.board.dto.response.ResponseDto;
 import com.soyoo.board.service.BoardService;
 import com.soyoo.board.dto.response.board.*;
@@ -46,9 +43,10 @@ public class BoardServiceImplement implements BoardService {
     }
 
     @Override
-    public ResponseEntity<ResponseDto> postBoard(PostBoardRequest dto) {
+    public ResponseEntity<ResponseDto> postBoard(PostBoardRequestDto dto) {
 
         ResponseDto body = null;
+
         String boardWriteEmail = dto.getBoardWriterEmail();
 
         try {
@@ -96,6 +94,11 @@ public class BoardServiceImplement implements BoardService {
                 
                 return CustomResponse.notExistBoardNumber();
             }
+
+            int viewCount = boardEntity.getViewCount();
+            boardEntity.setViewCount(++viewCount);
+            boardRepository.save(boardEntity);
+            
             String writerEmail = boardEntity.getWriterEmail();
             UserEntity userEntity = userRepository.findByEmail(writerEmail);
             List<CommentEntity> commentEntities = commentRepository.findByBoardNumber(boardNumber);

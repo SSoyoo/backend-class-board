@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.soyoo.board.dto.request.board.PatchBoardRequestDto;
-import com.soyoo.board.dto.request.board.PostBoardRequest;
+import com.soyoo.board.dto.request.board.PostBoardRequestDto;
 import com.soyoo.board.dto.response.ResponseDto;
 import com.soyoo.board.dto.response.board.GetBoardListResponseDto;
 import com.soyoo.board.dto.response.board.GetBoardResponseDto;
@@ -35,7 +35,7 @@ public class BoardController {
     // 게시글 작성
     @PostMapping("")
     public ResponseEntity<ResponseDto> postBoard(
-            @Valid @RequestBody PostBoardRequest requestBody
+            @Valid @RequestBody PostBoardRequestDto requestBody
 
     ) {
         ResponseEntity<ResponseDto> response = boardService.postBoard(requestBody);

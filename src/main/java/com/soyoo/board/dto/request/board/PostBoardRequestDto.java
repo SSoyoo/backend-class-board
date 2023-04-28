@@ -9,14 +9,11 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class PostBoardRequest {
+public class PostBoardRequestDto {
 
     @Email
     @NotBlank
     private String boardWriterEmail;
-
-    @NotNull
-    private Integer boardNumber;
 
     @NotBlank
     private String boardTitle;

@@ -9,7 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.soyoo.board.dto.request.board.PostBoardRequest;
+import com.soyoo.board.dto.request.board.PostBoardRequestDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,10 +32,10 @@ public class BoardEntity {
     private String writeDatetime;
     private int viewCount;
 
-    public BoardEntity(PostBoardRequest dto) {
+    public BoardEntity(PostBoardRequestDto dto) {
 
         Date now = new Date();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String writeDatetime = simpleDateFormat.format(now);
 
         this.writerEmail = dto.getBoardWriterEmail();
