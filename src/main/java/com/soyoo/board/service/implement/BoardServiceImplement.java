@@ -79,36 +79,36 @@ public class BoardServiceImplement implements BoardService {
     public ResponseEntity<? super GetBoardResponseDto> getBoard(Integer boardNumber) {
 
         GetBoardResponseDto body = null;
-       
+
         try {
 
-            //boardNumber null처리
-            if(boardNumber == null){
-                
+            // boardNumber null처리
+            if (boardNumber == null) {
+
                 return CustomResponse.validationFaild();
             }
 
-            //1. 존재하지 않는 게시물
+            // 1. 존재하지 않는 게시물
             BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
-            if (boardEntity == null){
-                
+            if (boardEntity == null) {
+
                 return CustomResponse.notExistBoardNumber();
             }
 
             int viewCount = boardEntity.getViewCount();
             boardEntity.setViewCount(++viewCount);
             boardRepository.save(boardEntity);
-            
+
             String writerEmail = boardEntity.getWriterEmail();
             UserEntity userEntity = userRepository.findByEmail(writerEmail);
             List<CommentEntity> commentEntities = commentRepository.findByBoardNumber(boardNumber);
             List<LikyEntity> likyEntities = likyRepository.findByBoardNumber(boardNumber);
 
             body = new GetBoardResponseDto();
-       
+
         } catch (Exception e) {
             e.printStackTrace();
-            
+
             return CustomResponse.databaseError();
         }
         return ResponseEntity.status(HttpStatus.OK).body(body);
@@ -129,7 +129,45 @@ public class BoardServiceImplement implements BoardService {
     @Override
     public ResponseEntity<ResponseDto> patchBoard(PatchBoardRequestDto dto) {
 
-        throw new UnsupportedOperationException("Unimplemented method 'patchBoard'");
+        int boardNumber = dto.getBoardNumber();
+        String userEmail = dto.getUserEmail();
+        String boardTitle = dto.getBoardTitle();
+        String boardContent = dto.getBoardContent();
+        String boardImageUrl = dto.getBoardImageUrl();
+
+        try {
+            // 1.존재하지 않는 게시물 번호 요청시의 반환
+
+            BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
+            if (boardEntity == null)
+                return CustomResponse.notExistBoardNumber();
+
+            // 2. 존재하지 않는 유저 이메일의 경우 반환
+            boolean existedUserEmail = userRepository.existsByEmail(userEmail);
+            if (!existedUserEmail)
+                return CustomResponse.notExistUserNumber();
+
+            // 3. 권한이 없는 유저의 경우 반환
+
+            boolean equalWriter = boardEntity.getWriterEmail().equals(userEmail);
+            if (!equalWriter)
+                return CustomResponse.noPermissions();
+
+            // 바뀐내용으로 set, 이것도 보드 엔터티에서 작업해주는 게 깔끔함. 
+            //보드 엔터티와 디티오를 넘겨주면 그걸 변경해주는 static 메소드 작성
+
+            boardEntity.setTitle(boardTitle);
+            boardEntity.setContent(boardContent);
+            boardEntity.setBoardImageUrl(boardImageUrl);
+            // 변경된 게시물 저장
+            boardRepository.save(boardEntity);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return CustomResponse.success();
     }
 
     @Override
