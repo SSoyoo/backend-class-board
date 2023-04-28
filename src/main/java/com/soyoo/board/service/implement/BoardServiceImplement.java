@@ -52,7 +52,7 @@ public class BoardServiceImplement implements BoardService {
         String boardWriteEmail = dto.getBoardWriterEmail();
 
         try {
-            // TODO : 존재하지 않는 유저 오류 반환
+            // 존재하지 않는 유저 오류 반환
             boolean existedUserEmail = userRepository.existsByEmail(boardWriteEmail);
             if (!existedUserEmail) {
                 ResponseDto errorBody = new ResponseDto("NU", "NonExistent User Email");
@@ -66,13 +66,13 @@ public class BoardServiceImplement implements BoardService {
             body = new ResponseDto("SU", "SUCESS");
 
         } catch (Exception exception) {
-            // TODO : 데이터베이스 오류반환
+            // 데이터베이스 오류반환
             exception.printStackTrace();
             ResponseDto errorBody = new ResponseDto("DE", "DataBase Error");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorBody);
         }
 
-        // TODO :성공반환
+        // 성공반환
         return ResponseEntity.status(HttpStatus.OK).body(body);
 
     }
@@ -81,9 +81,7 @@ public class BoardServiceImplement implements BoardService {
     public ResponseEntity<? super GetBoardResponseDto> getBoard(Integer boardNumber) {
 
         GetBoardResponseDto body = null;
-        ResponseDto errorBody = null;
-        
-
+       
         try {
 
             //boardNumber null처리
@@ -102,6 +100,8 @@ public class BoardServiceImplement implements BoardService {
             UserEntity userEntity = userRepository.findByEmail(writerEmail);
             List<CommentEntity> commentEntities = commentRepository.findByBoardNumber(boardNumber);
             List<LikyEntity> likyEntities = likyRepository.findByBoardNumber(boardNumber);
+
+            body = new GetBoardResponseDto();
        
         } catch (Exception e) {
             e.printStackTrace();
