@@ -33,7 +33,7 @@ public class CustomResponse {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
     }
 
-    public static ResponseEntity<ResponseDto> notExistUserNumber(){ // 니가 누구인지 모르겠다 : 인증
+    public static ResponseEntity<ResponseDto> notExistUserEmail(){ // 니가 누구인지 모르겠다 : 인증
 
         ResponseDto errorBody = new ResponseDto("NU", "Non-Existent User Email");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody);
