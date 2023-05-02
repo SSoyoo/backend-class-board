@@ -17,6 +17,7 @@ import com.soyoo.board.entity.BoardEntity;
 import com.soyoo.board.entity.CommentEntity;
 import com.soyoo.board.entity.LikyEntity;
 import com.soyoo.board.entity.UserEntity;
+import com.soyoo.board.entity.resultSet.BoardListResultSet;
 import com.soyoo.board.repository.BoardRepository;
 import com.soyoo.board.repository.CommentRepository;
 import com.soyoo.board.repository.LikyRepository;
@@ -117,13 +118,33 @@ public class BoardServiceImplement implements BoardService {
     @Override
     public ResponseEntity<? super GetBoardListResponseDto> getBoardList() {
 
-        throw new UnsupportedOperationException("Unimplemented method 'getBoardList'");
+        GetBoardListResponseDto body = null;
+        try {
+            List<BoardListResultSet> resultSet = boardRepository.getList();
+            body = new GetBoardListResponseDto(resultSet);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
     @Override
     public ResponseEntity<? super GetBoardListResponseDto> getBoardTop3() {
 
-        throw new UnsupportedOperationException("Unimplemented method 'getBoardTop3'");
+        GetBoardListResponseDto body = null;
+        try {
+            
+            List<BoardListResultSet> resultSet = boardRepository.getTop3List();
+            body = new GetBoardListResponseDto(resultSet);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
     @Override
@@ -145,7 +166,7 @@ public class BoardServiceImplement implements BoardService {
             // 2. 존재하지 않는 유저 이메일의 경우 반환
             boolean existedUserEmail = userRepository.existsByEmail(userEmail);
             if (!existedUserEmail)
-                return CustomResponse.notExistUserNumber();
+                return CustomResponse.notExistUserEmail();
 
             // 3. 권한이 없는 유저의 경우 반환
 
