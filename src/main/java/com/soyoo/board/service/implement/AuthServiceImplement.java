@@ -11,6 +11,7 @@ import com.soyoo.board.dto.request.auth.SignInRequestDto;
 import com.soyoo.board.dto.request.auth.SignUpRequestDto;
 import com.soyoo.board.dto.response.ResponseDto;
 import com.soyoo.board.dto.response.auth.SignInResponseDto;
+import com.soyoo.board.entity.UserEntity;
 import com.soyoo.board.repository.UserRepository;
 import com.soyoo.board.service.AuthService;
 
@@ -33,20 +34,24 @@ public class AuthServiceImplement implements AuthService {
         String email = dto.getUserEmail();
         String nickname = dto.getUserNickname();
         String PhoneNumner = dto.getUserPhoneNumber();
+        String password = dto.getUserPassword();
         try {
 
             // 존재하는 유저 이메일
             boolean existUserEmail = userRepository.existsByEmail(email);
-            if (existUserEmail)
-                return CustomResponse.existUserEmail();
+            if (existUserEmail) return CustomResponse.existUserEmail();
             // 존재하는 유저 닉네임
             boolean existUserNickname = userRepository.existsByNickname(nickname);
-            if (existUserNickname)
-                return CustomResponse.existUserNickname();
+            if (existUserNickname) return CustomResponse.existUserNickname();
             // 존재하는 유저 휴대폰번호
             boolean existUserPhoneNumber = userRepository.existsByPhoneNumber(PhoneNumner);
-            if (existUserPhoneNumber)
-                return CustomResponse.existUserPhoneNumber();
+            if (existUserPhoneNumber) return CustomResponse.existUserPhoneNumber();
+
+            String encodedPassword = passwordEncoder.encode(password);
+            dto.setUserPassword(encodedPassword);
+
+            UserEntity userEntity = new UserEntity(dto);
+            userRepository.save(userEntity);
 
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -57,6 +62,8 @@ public class AuthServiceImplement implements AuthService {
 
     @Override
     public ResponseEntity<? super SignInResponseDto> signIn(SignInRequestDto dto) {
+
+
 
     }
 
