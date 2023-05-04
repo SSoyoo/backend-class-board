@@ -3,6 +3,7 @@ package com.soyoo.board.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -29,7 +30,9 @@ public class WebSecurityConfig {
                 .csrf().disable()
                 .httpBasic().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests().antMatchers("/**").permitAll() 
+                .authorizeRequests().antMatchers("/api/vi**","api/v2/auth/**").permitAll() 
+                .antMatchers("/ap1/v2/board/list","api/v2/board/top3").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/v2/board/*").permitAll()
                 .anyRequest().authenticated();
 
         httpSecurity.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
