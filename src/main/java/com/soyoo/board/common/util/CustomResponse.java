@@ -45,5 +45,22 @@ public static ResponseEntity<ResponseDto> noPermissions(){ // 니가 누구인�
     return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorBody);
 
 }
+public static ResponseEntity<ResponseDto> existUserEmail(){
+
+    ResponseDto errorBody = new ResponseDto("EU", "Existent User Email");
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+}
+
+public static ResponseEntity<ResponseDto> existUserNickname(){
+
+    ResponseDto errorBody = new ResponseDto("EN", "Existent User Nickname");
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+}
+
+public static ResponseEntity<ResponseDto> existUserPhoneNumber(){
+
+    ResponseDto errorBody = new ResponseDto("EP", "Existent User PhoneNumber");
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+}
 
 }
