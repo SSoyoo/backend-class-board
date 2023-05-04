@@ -31,6 +31,14 @@ public class CustomResponse {
 
         ResponseDto errorBody = new ResponseDto("NB", "Non-Existent Board Number");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+
+        
+    }
+
+    public static ResponseEntity<ResponseDto> signInFailed(){
+
+        ResponseDto errorBody = new ResponseDto("SF", "Sign-in failed");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
     }
 
     public static ResponseEntity<ResponseDto> notExistUserEmail(){ // 니가 누구인지 모르겠다 : 인증
@@ -38,6 +46,9 @@ public class CustomResponse {
         ResponseDto errorBody = new ResponseDto("NU", "Non-Existent User Email");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody);
 }
+
+
+
 
 public static ResponseEntity<ResponseDto> noPermissions(){ // 니가 누구인지 알았는게 니는 권한이 없다!
 
@@ -62,5 +73,7 @@ public static ResponseEntity<ResponseDto> existUserPhoneNumber(){
     ResponseDto errorBody = new ResponseDto("EP", "Existent User PhoneNumber");
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
 }
+
+
 
 }

@@ -26,7 +26,7 @@ public class AuthController {
     }
     
 
-    @PostMapping("")
+    @PostMapping("/sign-up")
     public ResponseEntity<ResponseDto> signUp(
         @Valid @RequestBody SignUpRequestDto requestBody
     ){
