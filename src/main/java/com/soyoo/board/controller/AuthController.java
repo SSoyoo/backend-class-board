@@ -34,7 +34,7 @@ public class AuthController {
         return response;
     }
 
-    @PostMapping("sign-in")
+    @PostMapping("/sign-in")
     public ResponseEntity<? super SignInResponseDto> signIn(
         @Valid @RequestBody SignInRequestDto requestBody
     ){

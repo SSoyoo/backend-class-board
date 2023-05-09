@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import com.soyoo.board.common.util.CustomResponse;
 import com.soyoo.board.dto.request.board.PatchBoardRequestDto;
 import com.soyoo.board.dto.request.board.PostBoardRequestDto;
+import com.soyoo.board.dto.request.board2.PatchBoardRequestDto2;
+import com.soyoo.board.dto.request.board2.PostBoardRequestDto2;
 import com.soyoo.board.dto.response.ResponseDto;
 import com.soyoo.board.service.BoardService;
 import com.soyoo.board.dto.response.board.*;
@@ -46,20 +48,30 @@ public class BoardServiceImplement implements BoardService {
     @Override
     public ResponseEntity<ResponseDto> postBoard(PostBoardRequestDto dto) {
 
-        ResponseDto body = null;
-
         String boardWriteEmail = dto.getBoardWriterEmail();
+        PostBoardRequestDto2 dto2 = new PostBoardRequestDto2(dto);
+
+        ResponseEntity<ResponseDto> response = postBoard(boardWriteEmail, dto2);
+
+        return response;
+
+    }
+
+    @Override
+    public ResponseEntity<ResponseDto> postBoard(String userEmail,PostBoardRequestDto2 dto) {
+
+        ResponseDto body = null;
 
         try {
             // 존재하지 않는 유저 오류 반환
-            boolean existedUserEmail = userRepository.existsByEmail(boardWriteEmail);
+            boolean existedUserEmail = userRepository.existsByEmail(userEmail);
             if (!existedUserEmail) {
                 ResponseDto errorBody = new ResponseDto("NU", "NonExistent User Email");
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody);
 
             }
 
-            BoardEntity boardEntity = new BoardEntity(dto);
+            BoardEntity boardEntity = new BoardEntity(userEmail, dto);
             boardRepository.save(boardEntity);
 
             body = new ResponseDto("SU", "SUCESS");
@@ -150,8 +162,20 @@ public class BoardServiceImplement implements BoardService {
     @Override
     public ResponseEntity<ResponseDto> patchBoard(PatchBoardRequestDto dto) {
 
-        int boardNumber = dto.getBoardNumber();
+        
         String userEmail = dto.getUserEmail();
+        PatchBoardRequestDto2 dto2 = new PatchBoardRequestDto2(dto);
+       
+        ResponseEntity<ResponseDto> response = patchBoard(userEmail, dto2);
+    
+        return response;
+    }
+
+    @Override
+    public ResponseEntity<ResponseDto> patchBoard(String userEmail, PatchBoardRequestDto2 dto) {
+
+        int boardNumber = dto.getBoardNumber();
+    
         String boardTitle = dto.getBoardTitle();
         String boardContent = dto.getBoardContent();
         String boardImageUrl = dto.getBoardImageUrl();
@@ -221,4 +245,5 @@ public class BoardServiceImplement implements BoardService {
        return CustomResponse.success();
     }
 
+    
 }
